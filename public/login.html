@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+  <div class="logo">UrbanWear</div>
+  <nav id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="#" id="cart-link">Cart (<span id="cart-count">0</span>)</a>
+    <a href="login.html" id="login-link">Login</a>
+    <a href="register.html" id="register-link">Register</a>
+    <a href="profile.html" id="profile-link" style="display:none;">Profile</a>
+    <a href="#" id="logout-link" style="display:none;">Logout</a>
+  </nav>
+</header>
+
+<h2>Login</h2>
+
+<form id="login-form">
+  <input type="email" placeholder="Email" id="email" required>
+  <input type="password" placeholder="Password" id="password" required>
+  <button type="submit">Login</button>
+</form>
+
+<script src="auth.js"></script>
+<script>
+document.getElementById("login-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const res = await fetch("http://localhost:3000/api/auth/login", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value
+    })
+  });
+
+  const data = await res.json();
+
+  if (data.token) {
+    saveToken(data.token);
+    window.location.href = "index.html";
+  } else {
+    alert("Login failed");
+  }
+});
+</script>
+
+</body>
+</html>
